@@ -1,4 +1,4 @@
-## Lab1
+## Lab2
 ### Запуск програми
 ```bash
 dotnet run --project App
