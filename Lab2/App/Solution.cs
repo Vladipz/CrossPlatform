@@ -1,6 +1,6 @@
 namespace App
 {
-    public class Solution
+    public static class Solution
     {
         public static double FindProbability(double[] arr, int n)
         {
@@ -16,6 +16,10 @@ namespace App
 
         private static void ValidateArray(double[] arr, int n)
         {
+            if (arr == null)
+            {
+                throw new ArgumentNullException(nameof(arr), "Array cannot be null.");
+            }
             if (arr.Length != n)
             {
                 throw new InvalidOperationException("Number of elements in the second line does not match the first line.");

@@ -1,9 +1,12 @@
 using App;
+using Xunit.Abstractions;
 
 namespace Tests
 {
-    public class SolutionTests
+    public class SolutionTests(ITestOutputHelper output)
     {
+        private readonly ITestOutputHelper _output = output;
+
         private static readonly double[] TestArray1 = [1, 0.1, 0.9];
         private static readonly double[] TestArray2 = [1.0, 1.0, 1.0];
         private static readonly double[] TestArray3 = [0.0, 0.0, 0.0];
@@ -30,6 +33,7 @@ namespace Tests
 
             // Assert
             Assert.Equal(expected, result, 3);
+            _output.WriteLine($"{nameof(FindProbability_ValidInputs_ReturnsExpectedResult)}: Expected: {expected}, Actual: {result} - PASSED");
         }
 
         [Theory]
@@ -41,6 +45,7 @@ namespace Tests
 
             // Assert
             Assert.Throws<InvalidOperationException>(act);
+            _output.WriteLine($"{nameof(ValidateArray_ArrayLengthDoesNotMatchN_ThrowsInvalidOperationException)}: PASSED");
         }
     }
 }

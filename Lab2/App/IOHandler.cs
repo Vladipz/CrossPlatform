@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace App
 {
     public static class IOHandler
@@ -34,21 +36,18 @@ namespace App
             }
 
             var arr = lines[1].Split(' ', StringSplitOptions.RemoveEmptyEntries)
-              .Select(static part => double.Parse(part))
-              .ToArray();
+                .Select(static part => double.Parse(part, CultureInfo.InvariantCulture))
+                .ToArray();
 
-            if (arr.Length != n)
-            {
-                throw new InvalidOperationException("Number of elements in the second line does not match the first line.");
-            }
-
-            return (n, arr);
+            return arr.Length != n
+                ? throw new InvalidOperationException("Number of elements in the second line does not match the first line.")
+                : (n, arr);
         }
 
         public static void WriteResult(double result)
         {
-            File.WriteAllText(OutputFileName, result.ToString());
+            var resultString = result.ToString(CultureInfo.InvariantCulture);
+            File.WriteAllText(OutputFileName, resultString);
         }
-
     }
 }

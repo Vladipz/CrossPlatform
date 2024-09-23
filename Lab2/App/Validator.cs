@@ -19,6 +19,8 @@ namespace App
 
         public static void ValidateDecimalNumbers(double[] arr, int n)
         {
+            ArgumentNullException.ThrowIfNull(arr);
+
             foreach (var number in arr)
             {
                 ValidateDecimalPlaces(number, n);
