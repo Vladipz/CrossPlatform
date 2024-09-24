@@ -10,6 +10,8 @@
             {
                 (n, arr) = IOHandler.ReadData();
                 Validator.ValidateDecimalNumbers(arr, 6);
+                Validator.ValidateN(n);
+                Validator.ValidateArrayRange(arr);
             }
             catch (Exception e)
             {

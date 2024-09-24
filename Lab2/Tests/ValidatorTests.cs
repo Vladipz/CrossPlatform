@@ -11,7 +11,7 @@ namespace Tests
         [InlineData(1.234, 3)]
         [InlineData(1.2341111, 7)]
         [InlineData(1.1234567891234567, 16)]
-        public void ValidateDecimalPlaces_ValidInputs_ReturnsExpectedResult(double number, int maxDecimalPlaces)
+        public void ValidateDecimalPlacesValidInputsReturnsExpectedResult(double number, int maxDecimalPlaces)
         {
             Validator.ValidateDecimalPlaces(number, maxDecimalPlaces);
             _output.WriteLine("Testing with number: {number} and maxDecimalPlaces: {maxDecimalPlaces} - PASSED");
@@ -19,7 +19,7 @@ namespace Tests
 
         [Theory]
         [InlineData(1.234, 2)]
-        public void ValidateDecimalPlaces_NumberHasMoreDecimalPlaces_ThrowsInvalidOperationException(double number, int maxDecimalPlaces)
+        public void ValidateDecimalPlacesNumberHasMoreDecimalPlacesThrowsInvalidOperationException(double number, int maxDecimalPlaces)
         {
             Assert.Throws<InvalidOperationException>(() => Validator.ValidateDecimalPlaces(number, maxDecimalPlaces));
             _output.WriteLine($"Testing with number: {number} and maxDecimalPlaces: {maxDecimalPlaces} - PASSED");

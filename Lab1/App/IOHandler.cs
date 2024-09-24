@@ -4,6 +4,7 @@ namespace App
     {
         private const string InputFileName = "INPUT.TXT";
         private const string OutputFileName = "OUTPUT.TXT";
+        private const int MaxValue = 1000; // Обмеження на W і H
 
         public static (int x, int y) ReadCoordinates()
         {
@@ -37,6 +38,11 @@ namespace App
             if (!int.TryParse(parts[0], out var x) || !int.TryParse(parts[1], out var y))
             {
                 throw new InvalidOperationException("Input file contains invalid integers.");
+            }
+            // Перевірка обмежень на W і H
+            if (x < 1 || x > MaxValue || y < 1 || y > MaxValue)
+            {
+                throw new InvalidOperationException($"Input values must be between 1 and {MaxValue}.");
             }
             return (x, y);
         }

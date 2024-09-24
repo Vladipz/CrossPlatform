@@ -26,7 +26,7 @@ namespace Tests
 
         [Theory]
         [MemberData(nameof(TestCases))]
-        public void FindProbability_ValidInputs_ReturnsExpectedResult(double[] inputArray, int n, double expected)
+        public void FindProbabilityValidInputsReturnsExpectedResult(double[] inputArray, int n, double expected)
         {
             // Act
             var result = Solution.FindProbability(inputArray, n);
@@ -37,7 +37,7 @@ namespace Tests
 
         [Theory]
         [MemberData(nameof(TestCases2))]
-        public void ValidateArray_ArrayLengthDoesNotMatchN_ThrowsInvalidOperationException(double[] inputArray, int n)
+        public void ValidateArrayArrayLengthDoesNotMatchNThrowsInvalidOperationException(double[] inputArray, int n)
         {
             // Act
             void act() => Solution.FindProbability(inputArray, n);

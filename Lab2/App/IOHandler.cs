@@ -35,18 +35,9 @@ namespace App
                 throw new InvalidOperationException("First line of the input file does not contain an integer.");
             }
 
-            switch (n)
-            {
-                case < 1:
-                case > 100:
-                    throw new InvalidOperationException("Number of elements is out of range.");
-                default:
-                    break;
-            }
-
             var arr = lines[1].Split(' ', StringSplitOptions.RemoveEmptyEntries)
-                .Select(static part => double.Parse(part, CultureInfo.InvariantCulture))
-                .ToArray();
+    .Select(static part => double.Parse(part, CultureInfo.InvariantCulture))
+    .ToArray();
 
             return arr.Length != n
                 ? throw new InvalidOperationException("Number of elements in the second line does not match the first line.")
