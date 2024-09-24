@@ -33,7 +33,6 @@ namespace Tests
 
             // Assert
             Assert.Equal(expected, result, 3);
-            _output.WriteLine($"{nameof(FindProbability_ValidInputs_ReturnsExpectedResult)}: Expected: {expected}, Actual: {result} - PASSED");
         }
 
         [Theory]
@@ -43,9 +42,11 @@ namespace Tests
             // Act
             void act() => Solution.FindProbability(inputArray, n);
 
+            // Output
+            _output.WriteLine($"Input: {string.Join(", ", inputArray)}, n: {n}");
+
             // Assert
             Assert.Throws<InvalidOperationException>(act);
-            _output.WriteLine($"{nameof(ValidateArray_ArrayLengthDoesNotMatchN_ThrowsInvalidOperationException)}: PASSED");
         }
     }
 }
