@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace App
 {
     public static class IOHandler
@@ -49,7 +51,7 @@ namespace App
 
         public static void WriteResult(int result)
         {
-            File.WriteAllText(OutputFileName, result.ToString());
+            File.WriteAllText(OutputFileName, result.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

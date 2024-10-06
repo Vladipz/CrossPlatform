@@ -17,7 +17,7 @@ namespace Tests
         [InlineData(5, 15)] // (5 + 1) * 5 / 2 = 15
         [InlineData(10, 55)] // (10 + 1) * 10 / 2 = 55
         [InlineData(100, 5050)] // (100 + 1) * 100 / 2 = 5050
-        public void CombinationsWithouRepetition_ValidInputs_ReturnsExpectedResult(ulong n, ulong expected)
+        public void CombinationsWithouRepetitionValidInputsReturnsExpectedResult(ulong n, ulong expected)
         {
             // Act
             var result = Combinatorics.CombinationsWithouRepetition(n);
@@ -25,7 +25,7 @@ namespace Tests
             // Assert
             Assert.Equal(expected, result);
 
-            _output.WriteLine($"{nameof(CombinationsWithouRepetition_ValidInputs_ReturnsExpectedResult)}n: {n}, result: {result} - passed");
+            _output.WriteLine($"{nameof(CombinationsWithouRepetitionValidInputsReturnsExpectedResult)}n: {n}, result: {result} - passed");
         }
 
     }
