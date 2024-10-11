@@ -7,14 +7,27 @@
             try
             {
                 var (n, numbersOfDepartments, connections) = IOHandler.ReadTree();
-
+                Console.WriteLine($"Count of departments: {n}");
+                Console.WriteLine($"Suspected departments: {string.Join(" ", numbersOfDepartments)}");
+                Console.WriteLine($"Connections: {string.Join(" ", connections)}");
                 var lca = DepartmetnsService.Solve(n, numbersOfDepartments, connections);
-
                 IOHandler.WriteResult(lca);
             }
-            catch (Exception ex)
+            catch (FileNotFoundException e)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Invalid input {e.Message}");
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine($"Invalid input numbers: {e.Message}");
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine($"Error with null value: {e.Message}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error: {e.Message}");
             }
         }
     }

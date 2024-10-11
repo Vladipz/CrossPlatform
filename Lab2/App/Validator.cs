@@ -8,7 +8,7 @@ namespace App
         public static void ValidateDecimalPlaces(double number, int maxDecimalPlaces)
         {
             var numberString = number.ToString("F16", CultureInfo.InvariantCulture).TrimEnd('0'); // Конвертуємо число у рядок з максимальною точністю до 16 знаків після коми
-            if (numberString.Contains('.'))
+            if (numberString.Contains('.', StringComparison.Ordinal))
             {
                 var decimalPlaces = numberString.Split('.')[1].Length;
                 if (decimalPlaces > maxDecimalPlaces)

@@ -6,6 +6,8 @@
 # dotenv files
 .env
 
+**/Directory.Build.props
+
 # User-specific files
 *.rsuser
 *.suo
