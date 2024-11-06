@@ -68,7 +68,6 @@ Vagrant.configure('2') do |config|
     windows.vm.provider 'virtualbox' do |vb|
       vb.memory = '4096'
       vb.cpus = 4
-      vb.boot_timeout = 300
     end
 
     # Install Chocolatey and .NET SDK
@@ -85,7 +84,9 @@ Vagrant.configure('2') do |config|
       dotnet tool install --global Vlad_Danilchuk --version 1.0.0
     EOF
 
-    # # Install and enable OpenSSH server
+    windows.vm.boot_timeout = 200
+    
+    ## Install and enable OpenSSH server
     # windows.vm.provision 'shell', inline: <<-EOF
     #   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
     #   Start-Service sshd
