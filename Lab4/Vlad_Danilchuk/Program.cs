@@ -144,7 +144,7 @@ app.OnExecute(() =>
 
 try
 {
-    return app.Execute(args);
+    return await app.ExecuteAsync(args);
 }
 catch (Exception e)
 {
