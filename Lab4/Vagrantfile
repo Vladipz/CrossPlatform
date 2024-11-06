@@ -1,0 +1,95 @@
+# Vagrant.configure('2') do |config|
+#   config.vm.box = 'ubuntu/jammy64'
+#
+#   # Box settings
+#   config.vm.box_check_update = false
+#
+#   # Provider settings
+#   config.vm.provider 'virtualbox' do |vb|
+#     # Display the VirtualBox GUI when booting the machine
+#     # vb.gui = true
+#
+#     # Customize the amount of memory on the VM:
+#     vb.memory = '4096'
+#     vb.cpus = '4'
+#   end
+#
+#   # Network settings
+#   # config.vm.network "forwarded_port", guest: 80, host: 8080
+#   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+#   config.vm.network 'private_network', ip: '192.168.33.10'
+#   # config.vm.network "public_network"
+#   # config.vm.synced_folder "../data", "/vagrant_data"
+#
+#   # Provisioning
+#   config.vm.provision 'shell', inline: <<~SHELL
+#
+#     sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+#
+#
+#     echo 'export PATH="$PATH:/home/vagrant/.dotnet/tools"' >> /home/vagrant/.bashrc
+#     source /home/vagrant/.bashrc
+#
+#     dotnet nuget add source http://192.168.56.1:5555/v3/index.json -n Baget
+#
+#     dotnet tool install --global Vlad_Danilchuk --version 1.0.0
+#   SHELL
+# end
+
+Vagrant.configure('2') do |config|
+  config.vm.define 'ubuntu' do |ubuntu|
+    ubuntu.vm.box = 'ubuntu/jammy64'
+    ubuntu.vm.hostname = 'linux'
+    ubuntu.vm.network 'private_network', ip: '192.168.56.10'
+    ubuntu.vm.provider 'virtualbox' do |vb|
+      vb.memory = '4096'
+      vb.cpus = 4
+    end
+
+    ubuntu.vm.provision 'shell', run: 'always', privileged: false, inline: <<-EOF
+
+      sudo apt-get update && sudo apt-get install -y dotnet-sdk-8.0
+
+      echo 'export PATH="$PATH:/home/vagrant/.dotnet/tools"' >> /home/vagrant/.bashrc
+
+      source /home/vagrant/.bashrc
+
+      dotnet nuget add source http://192.168.56.1:5555/v3/index.json -n Baget
+
+      dotnet tool install --global Vlad_Danilchuk --version 1.0.0
+
+    EOF
+  end
+
+  config.vm.define 'windows' do |windows|
+    windows.vm.box = 'gusztavvargadr/windows-10'
+    windows.vm.hostname = 'windows'
+    windows.vm.network 'private_network', ip: '192.168.56.10'
+    windows.vm.provider 'virtualbox' do |vb|
+      vb.memory = '4096'
+      vb.cpus = 4
+      vb.boot_timeout = 300
+    end
+
+    # Install Chocolatey and .NET SDK
+    windows.vm.provision 'shell', run: 'always', inline: <<-EOF
+      Set-ExecutionPolicy Bypass -Scope Process -Force
+      [System.Net.WebClient]::new().DownloadString('https://chocolatey.org/install.ps1') | Invoke-Expression
+
+      choco install dotnet-8.0-sdk -y
+    EOF
+
+    # Add NuGet source and install .NET global tool
+    windows.vm.provision 'shell', run: 'always', inline: <<-EOF
+      dotnet nuget add source http://192.168.56.1:5555/v3/index.json -n Baget
+      dotnet tool install --global Vlad_Danilchuk --version 1.0.0
+    EOF
+
+    # # Install and enable OpenSSH server
+    # windows.vm.provision 'shell', inline: <<-EOF
+    #   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+    #   Start-Service sshd
+    #   Set-Service -Name sshd -StartupType 'Automatic'
+    # EOF
+  end
+end

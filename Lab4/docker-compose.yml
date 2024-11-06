@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  nuget-server:
+    image: loicsharma/baget:latest
+    container_name: nuget-server
+    ports:
+      - "5555:80"  # Публікує порт 80 контейнера на порт 5555 хоста
+    env_file:
+      - baget.env  # Файл зі змінними середовища
+    volumes:
+      - ./baget-data:/var/baget  # Монтує локальну директорію для збереження даних
+    restart: always  # Автоматично перезапускати контейнер у разі збою
