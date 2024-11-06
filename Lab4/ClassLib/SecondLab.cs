@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace ClassLib
 {
-    public class SecondLab
+    public static class SecondLab
     {
         public static void Execute(string inputFilePath, string outputFilePath)
         {

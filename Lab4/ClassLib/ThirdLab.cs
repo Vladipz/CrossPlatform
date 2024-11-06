@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace ClassLib
 {
-    public class ThirdLab
+    public static class ThirdLab
     {
 
         public static void Execute(string inputFilePath, string outputFilePath)

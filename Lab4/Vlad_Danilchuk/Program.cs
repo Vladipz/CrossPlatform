@@ -3,6 +3,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 const string DefaultInputFileName = "INPUT.TXT";
 const string DefaultOutputFileName = "OUTPUT.TXT";
+const string LabPathVariable = "LAB_PATH";
 
 var app = new CommandLineApplication
 {
@@ -31,14 +32,14 @@ app.Command("set-path", setPath =>
     {
         if (OperatingSystem.IsWindows())
         {
-            Environment.SetEnvironmentVariable("LAB_PATH", path.Value(), EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable(LabPathVariable, path.Value(), EnvironmentVariableTarget.User);
         }
         else
         {
             var labPath = path.Value();
 
             // Set the environment variable for the current session
-            Environment.SetEnvironmentVariable("LAB_PATH", labPath);
+            Environment.SetEnvironmentVariable(LabPathVariable, labPath);
 
             // Save the environment variable in .zshrc to make it permanent
             var zshrcPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".bashrc");
@@ -52,14 +53,11 @@ app.Command("set-path", setPath =>
             // Manually load the variable into the current C# environment
             // Parsing .zshrc to update the current environment variable
             var lines = File.ReadAllLines(zshrcPath);
-            foreach (var line in lines)
+            foreach (var line in lines.Where(line => line.StartsWith("export LAB_PATH=")))
             {
-                if (line.StartsWith("export LAB_PATH="))
-                {
-                    var value = line.Split('=')[1].Trim('"');
-                    Environment.SetEnvironmentVariable("LAB_PATH", value);
-                    Console.WriteLine($"LAB_PATH loaded into current session as: {value}");
-                }
+                var value = line.Split('=')[1].Trim('"');
+                Environment.SetEnvironmentVariable("LAB_PATH", value);
+                Console.WriteLine($"LAB_PATH loaded into current session as: {value}");
             }
         }
     });
@@ -83,7 +81,7 @@ app.Command("run", run =>
 
         lab1.OnExecute(() =>
         {
-            var folderPath = Environment.GetEnvironmentVariable("LAB_PATH");
+            var folderPath = Environment.GetEnvironmentVariable(LabPathVariable);
             if (string.IsNullOrEmpty(folderPath))
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -102,7 +100,7 @@ app.Command("run", run =>
 
         lab2.OnExecute(() =>
         {
-            var folderPath = Environment.GetEnvironmentVariable("LAB_PATH");
+            var folderPath = Environment.GetEnvironmentVariable(LabPathVariable);
             if (string.IsNullOrEmpty(folderPath))
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -121,7 +119,7 @@ app.Command("run", run =>
 
         lab3.OnExecute(() =>
         {
-            var folderPath = Environment.GetEnvironmentVariable("LAB_PATH", EnvironmentVariableTarget.User);
+            var folderPath = Environment.GetEnvironmentVariable(LabPathVariable, EnvironmentVariableTarget.User);
             if (string.IsNullOrEmpty(folderPath))
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
