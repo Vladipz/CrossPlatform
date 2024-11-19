@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- add reference to nuget package -->
+    <!-- <PackageReference Include="v_danilchuk" Version="1.0.0" /> -->
     <ProjectReference Include="..\App\App.csproj" />
   </ItemGroup>
 
