@@ -27,39 +27,53 @@ app.Command("version", command =>
 app.Command("set-path", setPath =>
 {
     setPath.Description = "Set path to folder with input and output files";
+
     var path = setPath.Option("-p|--path", "Path to folder", CommandOptionType.SingleValue).IsRequired();
+
     setPath.OnExecute(() =>
     {
+        var labPath = path.Value();
+
         if (OperatingSystem.IsWindows())
         {
-            Environment.SetEnvironmentVariable(LabPathVariable, path.Value(), EnvironmentVariableTarget.User);
+            Environment.SetEnvironmentVariable(LabPathVariable, labPath, EnvironmentVariableTarget.User);
+            Console.WriteLine($"LAB_PATH set to {labPath} and saved for user on Windows.");
         }
-        else
+        else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
         {
-            var labPath = path.Value();
+            var userHome = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string shellConfigPath;
 
-            // Set the environment variable for the current session
+            if (OperatingSystem.IsMacOS())
+            {
+                shellConfigPath = Path.Combine(userHome, ".bash_profile");
+            }
+            else
+            {
+                shellConfigPath = Path.Combine(userHome, ".bashrc");
+            }
+
             Environment.SetEnvironmentVariable(LabPathVariable, labPath);
+            Console.WriteLine($"LAB_PATH set to {labPath} for the current session.");
 
-            // Save the environment variable in .zshrc to make it permanent
-            var zshrcPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".bashrc");
+            var exportCommand = $"\nexport LAB_PATH=\"{labPath}\"\n";
+            File.AppendAllText(shellConfigPath, exportCommand);
+            Console.WriteLine($"LAB_PATH saved to {shellConfigPath} for future sessions.");
 
-            Console.WriteLine(zshrcPath);
-            // Append the export command to .zshrc
-            File.AppendAllText(zshrcPath, $"\nexport LAB_PATH=\"{labPath}\"\n");
-
-            Console.WriteLine($"LAB_PATH set to {labPath} and saved to .zshrc");
-
-            // Manually load the variable into the current C# environment
-            // Parsing .zshrc to update the current environment variable
-            var lines = File.ReadAllLines(zshrcPath);
+            var lines = File.ReadAllLines(shellConfigPath);
             foreach (var line in lines.Where(line => line.StartsWith("export LAB_PATH=")))
             {
                 var value = line.Split('=')[1].Trim('"');
-                Environment.SetEnvironmentVariable("LAB_PATH", value);
+                Environment.SetEnvironmentVariable(LabPathVariable, value);
                 Console.WriteLine($"LAB_PATH loaded into current session as: {value}");
             }
         }
+        else
+        {
+            Console.WriteLine("Unsupported operating system. This tool works on Windows, macOS, and Linux.");
+        }
+
+        return 0;
     });
 });
 
