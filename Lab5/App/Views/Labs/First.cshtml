@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "First Lab";
+}
+
+<h2>First Lab</h2>
+
+<div style="margin-bottom: 20px;">
+  <div>
+    Знайдіть кількість невироджених прямокутників зі сторонами, паралельними осям координат, вершини яких лежать у точках із цілими координатами всередині або на межі прямокутника, протилежні кути якого знаходяться у точках (0, 0) та (W, Н).<br>
+    <b>Вхідні дані</b><br>
+    Два натуральні числа W і Н, що не перевищують 1000.<br>
+    <b>Вихідні дані</b><br>
+    Кількість невироджених прямокутників. <br><br>
+  </div>
+  <form asp-action="First" method="post" style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 500px;">
+    <label for="inputText" style="font-weight: bold;">Введіть вхідні дані:</label>
+    <textarea id="inputText" name="inputText" rows="6" style="padding: 10px; font-family: Arial, sans-serif; resize: vertical;"></textarea>
+    <button type="submit" style="padding: 10px; font-size: 16px; font-weight: bold; cursor: pointer;">Виконати</button>
+  </form>
+</div>
+
+@if (ViewBag.OutputResult != null)
+{
+    <div style="margin-top: 20px;">
+        <h3 style="font-weight: bold;">Результат:</h3>
+        <div style="width: 100%; max-width: 500px; padding: 10px; font-family: Arial, sans-serif;">@ViewBag.OutputResult</div>
+    </div>
+}
