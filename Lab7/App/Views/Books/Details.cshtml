@@ -1,0 +1,15 @@
+@model Book
+
+<h2>Book Details</h2>
+
+<div>
+    <h3>@Model.BookTitle</h3>
+    <p><strong>Author:</strong> @Model.Author.AuthorFirstName @Model.Author.AuthorLastName</p>
+    <p><strong>Category:</strong> @Model.BookCategory.BookCategoryDescription</p>
+    <p><strong>ISBN:</strong> @Model.ISBN</p>
+    <p><strong>Publication Date:</strong> @Model.DateOfPublication.ToShortDateString()</p>
+    <p><strong>Price:</strong> @Model.BookRecommendedPrice</p>
+    <p><strong>Comments:</strong> @Model.BookComments</p>
+</div>
+
+<a href="@Url.Action("Index", "Books")">Back to list</a>

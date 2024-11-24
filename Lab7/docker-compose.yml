@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: App.Api/Dockerfile
+    ports:
+      - "5080:5080"
+    environment:
+      - DATABASE_PROVIDER=${DATABASE_PROVIDER:-SQLite}
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - postgres
+      - sqlserver
+    volumes:
+      - ./logs:/app/logs
+      - ./data/sqlite:/app
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: crossplatformapp
+    ports:
+      - "5433:5433"
+    networks:
+      - app-network
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "reallyStrongPwd123"
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+
+networks:
+  app-network:
